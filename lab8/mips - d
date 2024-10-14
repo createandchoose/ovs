@@ -1,0 +1,46 @@
+.data
+prompt:      .asciiz "Введите два целых числа: "
+result:      .asciiz "НОД(%d, %d) = %d\n"
+
+.text
+.globl main
+
+gcd:
+    
+    loop:
+        beq $a1, $zero, return_a   
+        move $t0, $a1               
+        divu $a0, $a0, $a1          
+        mfhi $a1                    
+        j loop                      
+
+    return_a:
+        move $v0, $a0               
+        jr $ra
+
+main:
+    li $v0, 4                   
+    la $a0, prompt
+    syscall
+
+    li $v0, 5                   
+    syscall
+    move $a0, $v0               
+
+    li $v0, 5                   
+    syscall
+    move $a1, $v0               
+
+    jal gcd                     
+
+    
+    li $v0, 1                   
+    move $a0, $v0
+    syscall
+
+    li $v0, 4                   
+    la $a0, result
+    syscall
+
+    li $v0, 10                  
+    syscall
